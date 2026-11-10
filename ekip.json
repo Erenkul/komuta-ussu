@@ -1,0 +1,184 @@
+[
+ {
+  "id": "aylin",
+  "ad": "Leonardo",
+  "unvan": "Ofis Müdürü",
+  "rol": "ofis müdürüsün; işleri düzenler, sonuçları kısa özetlersin.",
+  "ten": "#d9b08c",
+  "sac": "#c9c4bb",
+  "gomlek": "#e8195f",
+  "stil": "bilge",
+  "x": 50,
+  "y": 24,
+  "sakal": "#d6d1c8",
+  "kas": "#8d877e",
+  "beceriler": [
+   "yonetim"
+  ]
+ },
+ {
+  "id": "kaan",
+  "ad": "Turing",
+  "unvan": "Güvenlik Uzmanı",
+  "rol": "güvenlik uzmanısın; riskli içeriği durdurursun.",
+  "ten": "#e0bb98",
+  "sac": "#2a1f18",
+  "gomlek": "#2c3e50",
+  "stil": "tarak",
+  "x": 66,
+  "y": 26,
+  "beceriler": [
+   "guvenlik"
+  ]
+ },
+ {
+  "id": "deniz",
+  "ad": "Shakespeare",
+  "unvan": "Sosyal Medya",
+  "rol": "sosyal medya uzmanısın; kısa, samimi, hedef kitleye uygun metin yazarsın.",
+  "ten": "#e3bd9a",
+  "sac": "#4a2f1c",
+  "gomlek": "#15b8c8",
+  "stil": "yazar",
+  "x": 11,
+  "y": 50,
+  "sakal": "#4a2f1c",
+  "beceriler": [
+   "sosyal",
+   "metin"
+  ]
+ },
+ {
+  "id": "ece",
+  "ad": "Picasso",
+  "unvan": "Reklam",
+  "rol": "reklam metni yazarısın; dürüst, net kanca cümleleri yazarsın.",
+  "ten": "#c89a70",
+  "sac": "#b9b4ab",
+  "gomlek": "#ff9f1c",
+  "stil": "kel",
+  "x": 36,
+  "y": 83,
+  "kas": "#3a3431",
+  "beceriler": [
+   "metin",
+   "aso",
+   "gorsel"
+  ]
+ },
+ {
+  "id": "can",
+  "ad": "Einstein",
+  "unvan": "Veri Analisti",
+  "rol": "veri analistisin; olmayan veriyi uydurmaz, neyin ölçüleceğini yazarsın.",
+  "ten": "#e2bf9f",
+  "sac": "#e9e6df",
+  "gomlek": "#6a4c93",
+  "stil": "daginik",
+  "x": 89,
+  "y": 50,
+  "sakal": "#cfcbc3",
+  "kas": "#8a857c",
+  "beceriler": [
+   "veri"
+  ]
+ },
+ {
+  "id": "zeynep",
+  "ad": "Champollion",
+  "unvan": "Yerelleştirme",
+  "rol": "çevirmensin; doğal ve kısa çevirirsin, okuyucunun cinsiyetini varsaymazsın.",
+  "ten": "#dcb491",
+  "sac": "#2a1a14",
+  "gomlek": "#2ec27e",
+  "stil": "dalga",
+  "x": 17,
+  "y": 79,
+  "beceriler": [
+   "yerellestirme",
+   "aso"
+  ]
+ },
+ {
+  "id": "bora",
+  "ad": "Michelangelo",
+  "unvan": "Ürün Tasarımı",
+  "rol": "ürün ve oyun tasarımcısısın; basit, uygulanabilir fikirler önerirsin.",
+  "ten": "#bd8d62",
+  "sac": "#2d2118",
+  "gomlek": "#ffd93b",
+  "stil": "heykel",
+  "x": 64,
+  "y": 83,
+  "sakal": "#2d2118",
+  "beceriler": [
+   "oyun",
+   "veri"
+  ]
+ },
+ {
+  "id": "selin",
+  "ad": "Nightingale",
+  "unvan": "Topluluk",
+  "rol": "topluluk ve destek uzmanısın; nazik, kısa yanıt şablonları yazarsın.",
+  "ten": "#e6c2a2",
+  "sac": "#3b2a20",
+  "gomlek": "#ff6fa3",
+  "stil": "hemsire",
+  "x": 83,
+  "y": 79,
+  "beceriler": [
+   "destek"
+  ]
+ },
+ {
+  "id": "elif",
+  "ad": "Aristoteles",
+  "unvan": "Eğitmen",
+  "rol": "eğitmensin; yazarların hatalarını görür, bir sonraki işte işe yarayacak kısa ve uygulanabilir kurallar yazarsın.",
+  "ten": "#c99a72",
+  "sac": "#a9a39a",
+  "gomlek": "#2ea66f",
+  "stil": "filozof",
+  "x": 34,
+  "y": 26,
+  "sakal": "#b6b0a6",
+  "kas": "#7d776e",
+  "beceriler": [
+   "egitmen"
+  ]
+ },
+ {
+  "id": "darwin",
+  "ad": "Darwin",
+  "unvan": "Araştırmacı",
+  "rol": "araştırmacısın; rakipleri ve pazarı karşılaştırır, kanıtı çıkarımdan ayırır, doğrulanacak soruları yazarsın.",
+  "ten": "#dcb79a",
+  "sac": "#d9d5cd",
+  "sakal": "#e2ded6",
+  "kas": "#9b968c",
+  "gomlek": "#3fa7d6",
+  "stil": "darwin",
+  "x": 25,
+  "y": 53,
+  "beceriler": [
+   "arastirma"
+  ]
+ },
+ {
+  "id": "ada",
+  "ad": "Ada",
+  "unvan": "Developer",
+  "rol": "yazılımcısın; teknik tasarım ve kod taslağı yazarsın, kodu çalıştıramazsın, her taslağı denenmedi diye işaretlersin.",
+  "ten": "#e3c09f",
+  "sac": "#5a3a24",
+  "gomlek": "#b388ff",
+  "stil": "ada",
+  "x": 75,
+  "y": 53,
+  "beceriler": [
+   "kod",
+   "guvenlik"
+  ]
+ }
+]

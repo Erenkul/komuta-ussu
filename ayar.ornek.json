@@ -1,0 +1,50 @@
+{
+ "zaman_asimi_sn": 2400,
+ "dinlenme_orani": 1.0,
+ "en_cok_dinlenme_sn": 600,
+ "esik": 85,
+ "gunluk_sinav": 12,
+ "bulut_sn": 150,
+ "zincir": {
+  "varsayilan": [
+   "gemma-4-e4b-it",
+   "qwen3.5-9b"
+  ],
+  "bora": [
+   "gemma-4-e4b-it",
+   "qwen3.5-9b"
+  ],
+  "deniz": [
+   "gemma-4-e4b-it",
+   "qwen3.5-9b"
+  ],
+  "aylin": [
+   "gemma-4-e4b-it",
+   "qwen3.5-9b"
+  ],
+  "darwin": [
+   "gemma-4-e4b-it",
+   "qwen3.5-9b"
+  ],
+  "ada": [
+   "qwen3.5-9b",
+   "gemma-4-e4b-it"
+  ]
+ },
+ "proje": "ornek",
+ "baglam": 8192,
+ "sakin": false,
+ "gunluk_arge": 15,
+ "es_zamanli": 3,
+ "gunluk_akran": 10,
+ "gunluk_plan": 1,
+ "durdur": false,
+ "api": "http://127.0.0.1:1234/v1",
+ "bosta_birak_sn": 180,
+ "bellek_esik": 90,
+ "disari_bekle_dk": 15,
+ "bekle_uygulamalar": [
+  "Unity.exe"
+ ],
+ "github_yalniz_baglanti": []
+}

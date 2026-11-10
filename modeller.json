@@ -1,0 +1,117 @@
+{
+ "_not": "Her ajan için önerilen yerel modeller, en uygunu önce. Ajan panelinde gerçekten kullanılan zincirin (ayar.json: zincir) yanında görünür.",
+ "aylin": [
+  [
+   "gemma-4-12b-it-qat",
+   "Türkçesi en düzgün ve en dikkatli özet çıkaran yüklü model; sahibine yanıt ve rapor için. Yavaş: uzun raporda birkaç dakika."
+  ],
+  [
+   "gemma-4-e4b-it",
+   "Hızlı, Türkçesi iyi; kısa yanıt ve yönlendirme için yeterli. Şu an kullandığı."
+  ]
+ ],
+ "kaan": [
+  [
+   "qwen3.5-9b",
+   "Adım adım düşünür, riski varsayımdan ayırmada daha iyi; güvenlik denetimi için."
+  ],
+  [
+   "gemma-4-e4b-it",
+   "Hızlı ilk eleme; sınavda 81'de kaldı, ağır denetimde Qwen önce gelsin."
+  ]
+ ],
+ "deniz": [
+  [
+   "gemma-4-e4b-it",
+   "Kısa, akıcı, doğal Türkçe ve İngilizce kanca; işlerinde ortalama 96. Hızlı."
+  ],
+  [
+   "gemma-4-12b-it-qat",
+   "Daha yaratıcı ve daha az tekrarlı; uzun içerik takvimi için."
+  ]
+ ],
+ "ece": [
+  [
+   "gemma-4-e4b-it",
+   "Kısa başlık ve alt metinde iyi, ortalama 95; hızlı."
+  ],
+  [
+   "gemma-4-12b-it-qat",
+   "Gemma 4 resim de okur: ekran görüntüsüne bakıp ASO metni yazmak için."
+  ]
+ ],
+ "can": [
+  [
+   "qwen3.5-9b",
+   "Sayı, oran ve hesapta daha sağlam; ölçüm planı ve tahmin için."
+  ],
+  [
+   "gemma-4-e4b-it",
+   "Hızlı; kısa yorum için yeterli, ortalama 94."
+  ]
+ ],
+ "zeynep": [
+  [
+   "gemma-4-12b-it-qat",
+   "Gemma ailesi çok dilli; Arapça, Japonca, Rusça gibi zor dillerde büyük model daha az hata yapar."
+  ],
+  [
+   "gemma-4-e4b-it",
+   "Hızlı ilk çeviri; ortalama 93. Şu an kullandığı."
+  ]
+ ],
+ "bora": [
+  [
+   "qwen3.5-9b",
+   "Oyun kuralı ve denge gibi mantık isteyen işlerde daha tutarlı."
+  ],
+  [
+   "gemma-4-e4b-it",
+   "Hızlı fikir üretir, ortalama 94; ama 'abartı' ve 'duvar sözü' hataları burada."
+  ]
+ ],
+ "selin": [
+  [
+   "gemma-4-e4b-it",
+   "Kısa, sıcak, sade yanıt; destek için en uygunu, hızlı."
+  ],
+  [
+   "gemma-4-12b-it-qat",
+   "Zor ya da öfkeli yorumda daha özenli ton."
+  ]
+ ],
+ "elif": [
+  [
+   "qwen3.5-9b",
+   "Tek cümlelik, ölçülebilir kural yazmada daha disiplinli; Gemma'nın kuralları uzun kaldığı için 7 kez elendi."
+  ],
+  [
+   "gemma-4-e4b-it",
+   "Hızlı geri bildirim; şu an kullandığı, ortalaması 82 ile en düşük."
+  ]
+ ],
+ "darwin": [
+  [
+   "qwen3.5-9b",
+   "Veri, çıkarım ve doğrulanacak soruyu ayırmada daha iyi; uzun araştırma için."
+  ],
+  [
+   "gemma-4-e4b-it",
+   "Hızlı özet; ortalama 99."
+  ]
+ ],
+ "ada": [
+  [
+   "Qwen3-Coder-30B-A3B-Instruct",
+   "Kod için yapılmış; 30B ama her adımda 3B çalışır, 32 GB RAM'de işlemciyle akar (Q4 yaklaşık 18 GB). Yüklü değil, istersen indiririm."
+  ],
+  [
+   "qwen3.5-9b",
+   "Yüklü olanların koda en iyisi; ortalama 92, şu an kullandığı."
+  ],
+  [
+   "gemma-4-e4b-it",
+   "Yedek."
+  ]
+ ]
+}

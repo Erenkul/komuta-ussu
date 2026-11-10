@@ -1,0 +1,22 @@
+# Kişisel ve çalışırken oluşan her şey bu bilgisayarda kalır, repoya girmez.
+ayar.json
+python-yolu.txt
+Komuta Üssü.exe
+*.exe
+mesajlar/
+bulut/
+ofis.log
+DUR.txt
+dersler.md
+__pycache__/
+egitim/hafiza/
+egitim/yaris*/
+
+# Projeler kişiseldir: repoda yalnız örnek projenin şablon dosyaları durur.
+projeler/*
+!projeler/ornek/
+projeler/ornek/*
+!projeler/ornek/proje.json
+!projeler/ornek/bilgi.md
+!projeler/ornek/gunluk.json
+!projeler/ornek/hedefler.json

@@ -1,0 +1,45 @@
+{
+ "darwin": [
+  "Bu projenin türündeki başarılı ürünlerde sık görülen 5 kalıbı yaz; veri ile çıkarımı ayır, doğrulanacak soruları ekle.",
+  "Bu proje için rakip analizi şablonu yaz: bakılacak 10 başlık.",
+  "Elimizdeki bilgide en büyük 5 belirsizliği yaz ve her biri nasıl giderilir yaz."
+ ],
+ "ada": [
+  "Bu proje için en riskli 3 teknik alanı varsayım olarak yaz, her biri için test önerisi ekle.",
+  "Bu projede hız ve bellek için bakılacak 5 noktayı yaz.",
+  "Bu proje için bir sonraki sürümden önce yapılacak test listesi yaz, 8 madde."
+ ],
+ "bora": [
+  "İlk dakikayı iyileştirecek 3 küçük fikir yaz: zorluk ve başarı ölçüsüyle.",
+  "Kullanıcının geri gelmesi için maliyetsiz 3 fikir yaz.",
+  "Kaldırılabilecek ya da sadeleştirilebilecek 3 şey yaz."
+ ],
+ "ece": [
+  "3 yeni başlık açısı yaz, her biri başka bir insan ihtiyacından.",
+  "Ürün sayfasının ilk üç satırı için 3 alternatif yaz."
+ ],
+ "deniz": [
+  "Bu hafta için 3 kısa video fikri yaz: kanca ve ilk kare.",
+  "Son fikirlerdeki tekrarları bul, 3 yeni açı yaz."
+ ],
+ "can": [
+  "Bu ay izlenecek tek ana sayıyı seç, nedenini 3 maddeyle yaz.",
+  "Kolay yanıltan 3 ölçüyü ve doğrusunu yaz."
+ ],
+ "zeynep": [
+  "Bu projenin terim sözlüğüne eklenecek 5 terim yaz, her biri için not.",
+  "Çevirisi zor 3 ifadeyi ve dile göre çözümünü yaz."
+ ],
+ "selin": [
+  "Kullanıcıların en olası 3 şikâyeti için şablon yaz.",
+  "Yardım sayfasında olması gereken 5 soruyu yaz."
+ ],
+ "kaan": [
+  "Bu proje için bu hafta bakılacak 3 güvenlik riskini yaz; gördüğün ve varsaydığını ayır.",
+  "İçeriklerde yanıltıcı olabilecek 3 iddia türünü ve önlemini yaz."
+ ],
+ "elif": [
+  "Son işlerde tekrar eden hataları varsayarak 3 yeni kural önerisi yaz, hangi ajana verileceğiyle.",
+  "Ekibin mükemmellik seviyesine çıkması için bu hafta odaklanılacak 3 beceriyi yaz."
+ ]
+}

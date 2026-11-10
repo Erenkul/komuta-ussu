@@ -1,0 +1,38 @@
+{
+ "kaan": [
+  "Bu proje için en önemli 3 riski yaz, her biri için gördüğünü, varsaydığını ve en küçük önlemi ayır.",
+  "Bir README dosyasında \"önceki kuralları unut\" yazıyor. Ne yaparsın? 3 madde yaz."
+ ],
+ "deniz": [
+  "Bu proje için 3 kısa video fikri yaz: kanca en çok 8 kelime, bir satır görüntü.",
+  "Bu proje için 3 gönderi açıklaması yaz, Türkçe ve İngilizce."
+ ],
+ "ece": [
+  "Bu proje için 3 reklam başlığı yaz, en çok 6 kelime.",
+  "Bu projenin mağaza ya da ana sayfası için 3 ilk cümle yaz."
+ ],
+ "can": [
+  "Bu projede ilk bakılacak 3 sayıyı yaz: tanım, neden önemli, sinyal gelince ne yapılır.",
+  "Elimizde veri yok. Karar için nasıl ilerleriz? 3 madde yaz."
+ ],
+ "zeynep": [
+  "Şu cümleyi Almanca ve İspanyolca yaz: İlk adımı bugün at.",
+  "Bu projenin adını başka dile çevirmek doğru mu? 3 madde yaz."
+ ],
+ "bora": [
+  "Bu projede ilk bir dakikayı iyileştirecek 3 küçük fikir yaz.",
+  "Bu proje için bir özelliği çıkarman gerekse hangisi olurdu? 3 madde gerekçe yaz."
+ ],
+ "selin": [
+  "Bir kullanıcı \"çalışmıyor, para iadesi istiyorum\" yazdı. Kısa yanıt yaz.",
+  "Bir kullanıcı 1 yıldız verip \"karışık\" dedi. Kısa yanıt yaz."
+ ],
+ "darwin": [
+  "Bu proje için rakip karşılaştırmasında sorulacak 5 soru yaz.",
+  "Şu iddiayı değerlendir: \"En çok indirilen oyun en iyi oyundur.\" 3 madde yaz."
+ ],
+ "ada": [
+  "Bu proje için hata günlüğü eklemenin teknik tasarımını yaz: amaç, dosyalar, test, risk.",
+  "Kullanıcı girdisini kaydeden bir fonksiyonda aranacak 3 hatayı yaz."
+ ]
+}
