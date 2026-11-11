@@ -91,6 +91,40 @@ Ofis bunlardan başka kendiliğinden de çalışır: `gunluk.json`'daki günlük
 Leonardo'nun böldüğü plan parçaları, ajanların kendi alanındaki Ar-Ge'si ve kendini eğittiği
 sınavlar. Hepsini `ayar.json`'dan kısabilir ya da kapatabilirsin.
 
+## Notlarım, Projelerim ve Instagram
+
+Üst çubuktaki üç sayfa ofisin ajanlarından bağımsız çalışır; verileri yalnız bu bilgisayarda durur
+(`notlar.json` ve `kisisel/` git'e girmez).
+
+- **Notlarım** (`/notlar`): siteler, uygulamalar, video araçları, pazarlama, arayüz, skill'ler, MCP'ler,
+  modeller ve repolar için sekmeli not defteri. Her not bir adres, başlık, etiket ve kısa açıklamadır.
+- **Projelerim** (`/projeler`): aklındaki projeleri görseliyle ve durumuyla (fikir, planlandı, başladı)
+  tutarsın; ikinci sekme ofisin tanıdığı projeleri GitHub bağlantısıyla gösterir.
+- **Instagram** (`/instagram`): hazırlanan Reels taslakları onay kartında bekler, yalnız senin
+  **Paylaş** düğmen gönderir. İstatistik sekmesi hesabın ve son 12 gönderinin sayılarını okur.
+
+### Instagram kurulumu
+
+1. Instagram hesabını **profesyonel hesaba** (İşletme) çevir.
+2. Facebook hesabınla `developers.facebook.com` adresinde geliştirici kaydı aç.
+3. **Create App** → kullanım durumu olarak **Manage messaging & content on Instagram** → işletme
+   portföyü sorulursa bir tane oluştur (doğrulama gerekmez, "Verify later").
+4. Kullanım durumunun **Permissions and features** listesinde `instagram_business_basic`,
+   `instagram_business_content_publish` ve `instagram_business_manage_insights` iznini ekle.
+5. **App roles → Roles → Add People → Instagram Tester** ile kendi hesabını ekle; daveti Instagram'da
+   **Ayarlar → Uygulamalar ve internet siteleri → Test kullanıcısı davetleri** bölümünden kabul et.
+6. **API setup with Unified login** sayfasında bir yapılandırma oluştur (reklam ve yorum izinlerini
+   kaldırabilirsin), sonra **Generate access tokens → Add account → Generate token**.
+7. Anahtarı `kisisel/instagram-token.txt` dosyasına, hesabın kimlik numarasını (Generate tokens
+   satırında hesabın altında yazar) `kisisel/instagram/hesap.json` içine `{"ig_id": "..."}` olarak yaz.
+8. Paylaşmaya hazır olduğunda `kisisel/instagram/ayar.json` içine `{"yayinda": true}` yaz; o güne kadar
+   Paylaş düğmesi kilitlidir.
+
+Taslak eklemek: `python instagram.py taslak <video.mp4> <açıklama.txt> [başlık] [kapak ms] [not]`
+ya da birçoğu birden: `python instagram.py plan <liste.json>`. Instagram gönderi başına en çok 5
+etiket kabul eder. Anahtar hiçbir yere yazdırılmaz; Meta'nın yanıtlarından süzülür. Anahtarı
+istediğin an Instagram'da **Uygulamalar ve internet siteleri** bölümünden kaldırabilirsin.
+
 ## Ayarlar (`ayar.json`)
 
 Kurulumda `ayar.ornek.json`'dan kopyalanır ve repoya girmez.

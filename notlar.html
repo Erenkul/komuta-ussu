@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notlarım</title>
+<style>
+/* Notlarım: kaydettiğin siteler, uygulamalar, skill'ler, MCP'ler ve araçlar, sekme sekme. Notlar
+   notlar.json içinde durur, repoya girmez. Renkler İş Defteri ile aynı. */
+:root{--bg:#04070c;--panel:#0a141e;--panel2:#0e1c29;--line:#1d4656;--line2:#16323f;--cy:#4fe3ff;--cy2:#a8f3ff;
+--amber:#ffb648;--red:#ff5470;--ok:#55f2a9;--text:#e4f4fa;--dim:#8fb0bd;--dim2:#5f8392;--mono:Consolas,"Cascadia Mono",monospace;
+--sans:"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font:15px/1.5 var(--sans)}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--cy)}
+.ust{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:14px 22px;border-bottom:1px solid var(--line);background:var(--panel)}
+.geri{color:var(--dim);text-decoration:none;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:6px}
+.geri:hover{color:var(--cy2);border-color:var(--cy)}
+h1{margin:0;font:600 18px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--cy2)}
+.sayi{color:var(--dim);font-size:14px}
+input[type=search]{margin-left:auto;min-width:240px;background:var(--bg);border:1px solid var(--line2);border-radius:8px;padding:7px 11px}
+.sekmeler{display:flex;gap:2px;padding:0 22px;background:var(--panel);border-bottom:1px solid var(--line2);overflow-x:auto}
+.sekme{background:transparent;border:0;border-bottom:3px solid transparent;padding:12px 16px 9px;color:var(--dim);cursor:pointer;font-size:15px;font-weight:600;white-space:nowrap}
+.sekme:hover{color:var(--text)}
+.sekme.on{color:var(--cy2);border-bottom-color:var(--cy)}
+.sekme small{font:12px var(--mono);color:var(--dim2);margin-left:6px}
+.sekme.on small{color:var(--cy)}
+.suzgec{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:12px 22px;border-bottom:1px solid var(--line2)}
+.cip{background:transparent;border:1px solid var(--line2);border-radius:99px;padding:4px 12px;color:var(--dim);cursor:pointer;font-size:14px}
+.cip:hover{color:var(--text)}
+.cip.on{background:var(--panel2);color:var(--cy2);border-color:var(--cy)}
+.cip.kurulu{margin-left:auto}
+.cip.kurulu.on{color:var(--ok);border-color:#1f6b45}
+main{max-width:1100px;margin:0 auto;padding:20px 22px 60px}
+.aciklama{color:var(--dim);font-size:14px;margin:0 0 14px}
+details.ekle{background:var(--panel);border:1px solid var(--line2);border-radius:12px;margin-bottom:20px}
+details.ekle summary{cursor:pointer;padding:12px 16px;color:var(--cy2);font-weight:600;list-style:none}
+details.ekle summary::-webkit-details-marker{display:none}
+details.ekle summary::before{content:"+ ";color:var(--cy)}
+details.ekle[open] summary::before{content:"− "}
+form{display:grid;grid-template-columns:2fr 1.3fr 1fr 1fr auto;gap:8px;padding:0 14px 14px}
+form textarea{grid-column:1/-2;min-height:38px;resize:vertical}
+form input,form textarea,form select{background:var(--bg);border:1px solid var(--line2);border-radius:8px;padding:8px 11px;min-width:0}
+form .yaz{grid-column:-2/-1;grid-row:1/3;align-self:stretch}
+.btn{background:#0f3a4a;border:1px solid var(--cy);color:var(--cy2);border-radius:8px;padding:8px 18px;cursor:pointer;font-weight:600}
+.btn:hover{background:#15536a}
+.hata{grid-column:1/-1;color:var(--red);font-size:14px;margin:0}
+input:focus,textarea:focus,select:focus,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--cy);outline-offset:1px}
+.izgara{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.kart{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:14px 16px 12px}
+.kart:hover{border-color:var(--line)}
+.bas{display:flex;align-items:center;gap:10px;min-width:0}
+.harf{width:26px;height:26px;border-radius:7px;flex:none;display:grid;place-items:center;background:var(--panel2);border:1px solid var(--line);color:var(--cy2);font:700 13px var(--mono)}
+.bas a{font-weight:600;font-size:16px;color:var(--text);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bas a:hover{color:var(--cy2);text-decoration:underline}
+.adres{font:13px var(--mono);color:var(--dim2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.not{margin:0;color:var(--dim);font-size:14px;white-space:pre-wrap}
+.alt{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:auto;padding-top:6px}
+.rozet{font-size:12px;padding:2px 9px;border-radius:99px;border:1px solid var(--line);color:var(--cy2)}
+.rozet.kuruldu{color:var(--ok);border-color:#1f6b45}
+.rozet.kurulmadi{color:var(--amber);border-color:#7a5a22}
+.tarih{font:12px var(--mono);color:var(--dim2)}
+.ara{margin-left:auto;display:flex;gap:4px}
+.ara button{background:transparent;border:1px solid var(--line2);border-radius:6px;color:var(--dim);padding:2px 9px;cursor:pointer;font-size:13px}
+.ara button:hover{color:var(--text);border-color:var(--line)}
+.ara button.sil:hover{color:var(--red);border-color:#7a2a3b}
+.bos{color:var(--dim);text-align:center;margin:60px auto;max-width:440px}
+@media (max-width:760px){form{grid-template-columns:1fr}form textarea,form .yaz{grid-column:auto;grid-row:auto}input[type=search]{margin-left:0;min-width:0;width:100%}.cip.kurulu{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="ust">
+  <a class="geri" href="/">← Üsse dön</a>
+  <h1>Notlarım</h1>
+  <span class="sayi" id="sayi"></span>
+  <input type="search" id="ara" placeholder="Her sekmede ara" aria-label="Notlarda ara">
+</div>
+<nav class="sekmeler" id="sekmeler" role="tablist" aria-label="Bölümler"></nav>
+<div class="suzgec" id="suzgec"></div>
+<main>
+  <p class="aciklama" id="aciklama"></p>
+  <details class="ekle" id="ekleKutu">
+    <summary id="ekleBaslik">Yeni not ekle</summary>
+    <form id="form" autocomplete="off">
+      <input id="fAdres" type="url" placeholder="https://… adres" required aria-label="Adres">
+      <input id="fBaslik" placeholder="Ad (boşsa adresten alınır)" aria-label="Ad">
+      <select id="fBolum" aria-label="Sekme"></select>
+      <select id="fDurum" aria-label="Kurulum"><option value="">Kurulum yok</option><option value="kuruldu">Kuruldu</option><option value="kurulmadi">Kurulmadı</option></select>
+      <textarea id="fNot" placeholder="Not (ne işe yarar, neden kaydettin)" aria-label="Not"></textarea>
+      <input id="fEtiket" placeholder="Etiket" list="etiketler" aria-label="Etiket" style="grid-column:1/-2">
+      <button class="btn yaz" id="fBtn" type="submit">Ekle</button>
+      <p class="hata" id="hata" hidden></p>
+      <datalist id="etiketler"></datalist>
+    </form>
+  </details>
+  <div class="izgara" id="izgara"></div>
+</main>
+<script>
+const BOLUM=[
+ ['site','Web siteleri','Kaydettiğin siteler: ilham, oyun, harita, 3B araçlar.'],
+ ['uygulama','Uygulamalarım','Bu bilgisayarda açılan uygulamaların: Komuta Üssü içindekiler ve diğerleri.'],
+ ['video','Video üretimi',"Video yapmaya yarayan her şey: araçlar, MCP'ler, yöntemler ve fikirler; bu bilgisayarda çalışır mı, ne kadar tutar."],
+ ['pazarlama','Pazarlama','Tanıtım için notlar: sosyal medya, lansman yerleri, örnek alınacak gönderiler.'],
+ ['tasarim','UI','Arayüz ve web sitesi tasarımı: bileşen kütüphaneleri, yöntemler, örnekler (3B, hareket, düzen).'],
+ ['skill',"Skill'lerim","Claude Code'a öğrettiğim beceriler. \"Kuruldu\" olanları işlerde kendim kullanırım."],
+ ['mcp',"MCP'lerim","Claude Code'a bağlanan araç sunucuları: tarayıcı, veritabanı, tasarım."],
+ ['ajan','Yapay zekâ modelleri','Modeller ve ajanlar: hangisi ne işe yarar, bu bilgisayarda çalışır mı. Not olarak duruyor.'],
+ ['arac','Araçlar ve repolar',"GitHub'da bulduğun açık kaynak araçlar; çoğu henüz kurulmadı."]];
+const $=id=>document.getElementById(id);let L=[],bolum='site',etiket='',kurulu=false,duzen=null;
+try{const k=localStorage.getItem('notlar.sekme');if(BOLUM.some(b=>b[0]===k))bolum=k}catch(e){}
+const host=a=>{try{return new URL(a).hostname.replace(/^www\./,'')}catch(e){return a}};
+function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+$('fBolum').replaceChildren(...BOLUM.map(([k,ad])=>{const o=el('option',null,ad);o.value=k;return o}));
+async function yukle(){try{L=await (await fetch('/notlar.json')).json()}catch(e){$('izgara').replaceChildren(el('div','bos','Üsse ulaşılamadı. Komuta Üssü kapalı olabilir.'));return}ciz()}
+const bolumu=n=>n.bolum||'site';
+function ciz(){
+  const q=$('ara').value.trim().toLocaleLowerCase('tr');
+  const uy=n=>!q||[n.baslik,n.adres,n.not_,n.etiket].join(' ').toLocaleLowerCase('tr').includes(q);
+  $('sekmeler').replaceChildren(...BOLUM.map(([k,ad])=>{const b=el('button','sekme'+(k===bolum?' on':''),ad);b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected',k===bolum);
+    b.append(el('small',null,String(L.filter(n=>bolumu(n)===k&&uy(n)).length)));b.onclick=()=>{bolum=k;etiket='';kurulu=false;try{localStorage.setItem('notlar.sekme',k)}catch(e){}ciz()};return b}));
+  const B=L.filter(n=>bolumu(n)===bolum);
+  $('aciklama').textContent=BOLUM.find(b=>b[0]===bolum)[2];
+  $('ekleBaslik').textContent=BOLUM.find(b=>b[0]===bolum)[1]+' sekmesine ekle';
+  if(!duzen)$('fBolum').value=bolum;
+  const et=[...new Set(B.map(n=>n.etiket).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'tr'));
+  if(etiket&&!et.includes(etiket))etiket='';
+  const ciplar=et.length>1?['',...et].map(e=>{const b=el('button','cip'+(e===etiket?' on':''),e||'Hepsi');b.type='button';b.onclick=()=>{etiket=e;ciz()};return b}):[];
+  if(B.some(n=>n.durum)){const k=el('button','cip kurulu'+(kurulu?' on':''),kurulu?'✓ Yalnız kurulu olanlar':'Yalnız kurulu olanlar');k.type='button';k.onclick=()=>{kurulu=!kurulu;ciz()};ciplar.push(k)}
+  $('suzgec').replaceChildren(...ciplar);$('suzgec').hidden=!ciplar.length;
+  $('etiketler').replaceChildren(...[...new Set(L.map(n=>n.etiket).filter(Boolean))].map(e=>{const o=el('option');o.value=e;return o}));
+  const G=B.filter(n=>(!etiket||n.etiket===etiket)&&(!kurulu||n.durum==='kuruldu')&&uy(n));
+  $('sayi').textContent=L.length+' not';
+  if(!G.length){$('izgara').replaceChildren(el('div','bos',B.length?'Aramana uyan not yok.':'Bu sekmede henüz not yok. Yukarıdan ekleyebilirsin.'));return}
+  $('izgara').replaceChildren(...G.map(n=>{
+    const k=el('article','kart'),b=el('div','bas'),i=el('span','harf',(n.baslik||host(n.adres)).charAt(0).toLocaleUpperCase('tr')),a=el('a',null,n.baslik||host(n.adres));
+    a.href=n.adres;a.target='_blank';a.rel='noopener noreferrer';a.title=n.adres;b.append(i,a);k.append(b,el('div','adres',n.adres));
+    if(n.not_)k.append(el('p','not',n.not_));
+    const alt=el('div','alt');if(n.durum)alt.append(el('span','rozet '+n.durum,n.durum==='kuruldu'?'Kuruldu':'Kurulmadı'));
+    if(n.etiket)alt.append(el('span','rozet',n.etiket));alt.append(el('span','tarih',n.tarih||''));
+    const ara=el('div','ara'),d=el('button',null,'Düzenle'),s=el('button','sil','Sil');d.type=s.type='button';
+    d.onclick=()=>{duzen=n.id;$('fAdres').value=n.adres;$('fBaslik').value=n.baslik||'';$('fBolum').value=bolumu(n);$('fDurum').value=n.durum||'';$('fEtiket').value=n.etiket||'';$('fNot').value=n.not_||'';$('fBtn').textContent='Kaydet';$('ekleKutu').open=true;$('fAdres').focus();scrollTo({top:0,behavior:'smooth'})};
+    s.onclick=async()=>{if(!confirm((n.baslik||host(n.adres))+' silinsin mi?'))return;L=await (await fetch('/not-sil',{method:'POST',body:JSON.stringify({id:n.id})})).json();ciz()};
+    ara.append(d,s);alt.append(ara);k.append(alt);return k}));
+}
+$('form').onsubmit=async ev=>{ev.preventDefault();$('hata').hidden=true;
+  const r=await fetch('/not-ekle',{method:'POST',body:JSON.stringify({id:duzen,adres:$('fAdres').value.trim(),baslik:$('fBaslik').value,bolum:$('fBolum').value,durum:$('fDurum').value,etiket:$('fEtiket').value,not_:$('fNot').value})});
+  if(!r.ok){$('hata').textContent='Adres http:// ya da https:// ile başlamalı.';$('hata').hidden=false;return}
+  L=await r.json();bolum=$('fBolum').value;duzen=null;$('form').reset();$('fBtn').textContent='Ekle';ciz()};
+$('ara').oninput=ciz;yukle();
+</script>
+</body>
+</html>

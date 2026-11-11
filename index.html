@@ -29,6 +29,10 @@ header .hud,#dur{flex:none}
 /* Dar pencerede durdur/çalıştır düğmesi hep görünür kalsın: önce saat ve güç, sonra başlık aralığı küçülür. */
 @media (max-width:1500px){.c-saat{display:none}h1{letter-spacing:1.5px;font-size:17px}select{max-width:160px}.hud{gap:12px}header{gap:10px}}
 @media (max-width:1440px){.c-guc{display:none}.araclar .git{display:none}}
+@media (max-width:1800px){.c-saat{display:none}}
+@media (max-width:1720px){.c-guc{display:none}}
+@media (max-width:1650px){.c-model{display:none}}
+@media (max-width:1450px){.isler-ana .yazi{display:none}.isler-ana{font-size:15px}}
 @media (max-width:1300px){.isler-ana{padding:6px 10px}.araclar{padding-left:6px}select{max-width:130px}header{gap:8px}}
 .isler-ana{padding:6px 14px;background:#0f3a4a;border:1px solid var(--cy);color:var(--cy2);font:600 13px var(--mono);text-decoration:none;white-space:nowrap}
 .isler-ana:hover{background:#15536a}
@@ -202,7 +206,10 @@ dialog h2{font:600 14px var(--mono);letter-spacing:1px;color:var(--cy)}
     <h1>Komuta Üssü</h1>
     <select id="proje" aria-label="Proje"></select>
     <div class="araclar" role="group" aria-label="Proje"><button class="quiet" id="pListe">Projeler</button><a class="git" id="pGit" target="_blank" rel="noopener" hidden>GitHub</a><button class="quiet" id="pBilgi" title="Projenin bilgisi: ajanlar buna dayanır">Bilgi</button><button class="quiet" id="pYeni" title="Yeni proje aç">+ Yeni</button></div>
-    <a class="isler-ana" href="/isler" title="Ofisin yaptığı bütün işler: kim yaptı, ne istendi, ne çıktı">▤ İş Defteri</a>
+    <a class="isler-ana" href="/isler" title="Ofisin yaptığı bütün işler: kim yaptı, ne istendi, ne çıktı">▤<span class="yazi"> İş Defteri</span></a>
+    <a class="isler-ana" href="/notlar" title="Kaydettiğin siteler, uygulamalar, skill'ler ve araçlar">✎<span class="yazi"> Notlarım</span></a>
+    <a class="isler-ana" href="/projeler" title="Planlanan ve mevcut projelerin">◈<span class="yazi"> Projelerim</span></a>
+    <a class="isler-ana" href="/instagram" title="Instagram: onay bekleyen gönderiler ve istatistik">◉<span class="yazi"> Instagram</span></a>
     <div class="mode" id="mode" role="status"><i class="nokta"></i><span id="modeYazi">bağlanıyor</span></div>
     <div class="hud">
       <div class="chip"><small>MODEL</small><b id="hModel">-</b></div>

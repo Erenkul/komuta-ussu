@@ -13,10 +13,11 @@ bilgisayar dinlenir, ağır bir uygulama açıkken (ayar.json: bekle_uygulamalar
 Çalıştırma: ofis.bat. Ekran: http://127.0.0.1:8765
 Durdurma: bu klasöre DUR.txt koy ya da ekrandaki Durdur'a bas.
 """
-import ctypes, datetime, glob, json, os, re, shutil, subprocess, sys, threading, time, urllib.parse, urllib.request
+import base64, ctypes, datetime, glob, json, os, re, shutil, subprocess, sys, threading, time, urllib.parse, urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import egitim
+import instagram
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -1166,7 +1167,7 @@ def isler_listesi():
 
 def izle():
     """Kod değişince boş anda kendini yeniden başlatır: exe hep son sürümü açar."""
-    dosyalar = [yol(a) for a in ('ofis.py', 'egitim.py')]
+    dosyalar = [yol(a) for a in ('ofis.py', 'egitim.py', 'instagram.py')]
     ilk = [os.path.getmtime(d) for d in dosyalar]
     while True:
         time.sleep(10)
@@ -1202,6 +1203,54 @@ def github_esitle():
 
 
 durum_on = {'t': 0, 'veri': b''}
+
+
+not_kilit = threading.Lock()
+plan_kilit = threading.Lock()
+NOT_BOLUMLERI = ('site', 'uygulama', 'video', 'pazarlama', 'tasarim', 'skill', 'mcp', 'ajan', 'arac')
+
+
+def notlar_oku():
+    try:
+        with open(yol('notlar.json'), encoding='utf-8') as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return []
+
+
+def notlar_yaz(L):
+    with open(yol('notlar.json.yeni'), 'w', encoding='utf-8', newline='') as f:
+        json.dump(L, f, ensure_ascii=False, indent=1)
+    os.replace(yol('notlar.json.yeni'), yol('notlar.json'))
+
+
+def kisisel(*p):
+    """Your own data (planned projects, Instagram): beside the code, never in git."""
+    os.makedirs(yol('kisisel'), exist_ok=True)
+    return yol('kisisel', *p)
+
+
+def json_yaz(p, veri):
+    with open(p + '.yeni', 'w', encoding='utf-8', newline='') as f:
+        json.dump(veri, f, ensure_ascii=False, indent=1)
+    os.replace(p + '.yeni', p)
+
+
+def json_taze(p, bos):
+    try:
+        with open(p, encoding='utf-8') as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return bos
+
+
+def ig_liste():
+    gizli = ('video', 'yukle', 'kapak', 'gorseller')
+    return {'yayinda': instagram.yayinda(), 'sinir': instagram.ETIKET_SINIRI,
+            'taslaklar': [{**{k: v for k, v in x.items() if k not in gizli}, 'video': bool(x.get('video')), 'kapak': bool(x.get('kapak')),
+                           'gorsel_sayisi': len(x.get('gorseller') or []),
+                           'dosyalar': [os.path.basename(p) for p in [x.get('video')] + list(x.get('gorseller') or []) if p]}
+                          for x in instagram.taslaklar()]}
 
 
 class Ekran(BaseHTTPRequestHandler):
@@ -1260,6 +1309,37 @@ class Ekran(BaseHTTPRequestHandler):
             return self.cevap(200, 'text/html; charset=utf-8', open(yol('isler.html'), 'rb').read())
         if adres.path == '/isler.json':
             return self.cevap(200, 'application/json; charset=utf-8', json.dumps(isler_listesi(), ensure_ascii=False).encode())
+        if adres.path == '/projeler':
+            return self.cevap(200, 'text/html; charset=utf-8', open(yol('projeler.html'), 'rb').read())
+        if adres.path == '/projeler.json':
+            veri = {'mevcut': projeler(), 'planlanan': json_taze(kisisel('planlanan.json'), [])}
+            return self.cevap(200, 'application/json; charset=utf-8', json.dumps(veri, ensure_ascii=False).encode())
+        if re.fullmatch(r'/plan-gorsel/\d+\.(png|jpeg|webp)', adres.path) and os.path.exists(kisisel('planlanan', adres.path[13:])):
+            return self.cevap(200, 'image/' + adres.path.rsplit('.', 1)[1], open(kisisel('planlanan', adres.path[13:]), 'rb').read())
+        if adres.path == '/notlar':
+            return self.cevap(200, 'text/html; charset=utf-8', open(yol('notlar.html'), 'rb').read())
+        if adres.path == '/instagram':
+            return self.cevap(200, 'text/html; charset=utf-8', open(yol('instagram.html'), 'rb').read())
+        if adres.path == '/ig-taslaklar.json':
+            return self.cevap(200, 'application/json; charset=utf-8', json.dumps(ig_liste(), ensure_ascii=False).encode())
+        if adres.path == '/ig-istatistik.json':
+            try:
+                veri = instagram.istatistik((sorgu.get('taze') or [''])[0] == '1')
+            except instagram.Hata as e:
+                veri = {'hata': str(e)}
+            return self.cevap(200, 'application/json; charset=utf-8', json.dumps(veri, ensure_ascii=False).encode())
+        if re.fullmatch(r'/ig-video/\d+', adres.path):
+            return self.ig_video(adres.path[10:])
+        if re.fullmatch(r'/ig-gorsel/\d+/(\d+|kapak)', adres.path):
+            kimlik, sira = adres.path[11:].split('/')
+            x = next((x for x in instagram.taslaklar() if x['id'] == kimlik), None) or {}
+            g = [x.get('kapak')] if sira == 'kapak' else (x.get('gorseller') or [])
+            i = 0 if sira == 'kapak' else int(sira)
+            if i >= len(g) or not g[i] or not os.path.isfile(g[i]):
+                return self.cevap(404, 'text/plain', b'yok')
+            return self.cevap(200, 'image/png' if g[i].lower().endswith('.png') else 'image/jpeg', open(g[i], 'rb').read())
+        if adres.path == '/notlar.json':
+            return self.cevap(200, 'application/json; charset=utf-8', json.dumps(notlar_oku(), ensure_ascii=False).encode())
         if adres.path == '/taslak':
             ad = (sorgu.get('ad') or [''])[0]
             yer = (sorgu.get('yer') or ['ciktilar'])[0]
@@ -1300,6 +1380,116 @@ class Ekran(BaseHTTPRequestHandler):
                 'son': [os.path.basename(x)[:-3] for x in reversed(son)], 'kayit': kayit, 'modeller': modeller}
         return self.cevap(200, 'application/json; charset=utf-8', json.dumps(veri, ensure_ascii=False).encode())
 
+    def plan_isle(self, metin):
+        # Planlanan projeler: sahibinin fikirleri ve görselleri. Kişisel klasörde durur, repoya girmez.
+        try:
+            g = json.loads(metin)
+        except ValueError:
+            return self.cevap(400, 'text/plain', b'bozuk')
+        with plan_kilit:
+            L = json_taze(kisisel('planlanan.json'), [])
+            if self.path == '/plan-sil':
+                for x in L:
+                    if x['id'] == g.get('id') and x.get('gorsel'):
+                        try:
+                            os.remove(kisisel('planlanan', x['gorsel']))
+                        except OSError:
+                            pass
+                L = [x for x in L if x['id'] != g.get('id')]
+            else:
+                baslik = str(g.get('baslik', '')).strip()[:120]
+                if not baslik:
+                    return self.cevap(400, 'text/plain', b'baslik')
+                x = next((x for x in L if x['id'] == g.get('id')), None)
+                if not x:
+                    x = {'id': datetime.datetime.now().strftime('%Y%m%d%H%M%S%f'), 'tarih': datetime.date.today().isoformat(), 'gorsel': ''}
+                    L.insert(0, x)
+                x.update(baslik=baslik, not_=str(g.get('not_', '')).strip()[:3000],
+                         durum=g.get('durum') if g.get('durum') in ('fikir', 'planlandi', 'basladi') else 'fikir')
+                m = re.match(r'data:image/(png|jpeg|webp);base64,(.+)$', str(g.get('gorsel', '')), re.S)
+                if m:
+                    os.makedirs(kisisel('planlanan'), exist_ok=True)
+                    x['gorsel'] = x['id'] + '.' + m.group(1)
+                    with open(kisisel('planlanan', x['gorsel']), 'wb') as f:
+                        f.write(base64.b64decode(m.group(2)))
+            json_yaz(kisisel('planlanan.json'), L[:300])
+        return self.cevap(200, 'application/json; charset=utf-8', json.dumps(L[:300], ensure_ascii=False).encode())
+
+    def ig_video(self, kimlik):
+        # The draft's own file only, by its id: the page never names a path on this computer.
+        x = next((x for x in instagram.taslaklar() if x['id'] == kimlik), None)
+        dosya = (x or {}).get('yukle') or (x or {}).get('video')
+        if not dosya or not os.path.isfile(dosya):
+            return self.cevap(404, 'text/plain', b'yok')
+        boyut = os.path.getsize(dosya)
+        bas, son = 0, boyut - 1
+        m = re.match(r'bytes=(\d*)-(\d*)$', self.headers.get('Range', ''))
+        if m and (m.group(1) or m.group(2)):
+            bas = int(m.group(1)) if m.group(1) else max(0, boyut - int(m.group(2)))
+            son = min(int(m.group(2)), boyut - 1) if m.group(1) and m.group(2) else boyut - 1
+        self.send_response(206 if m else 200)
+        self.send_header('Content-Type', 'video/mp4'); self.send_header('Accept-Ranges', 'bytes')
+        self.send_header('Content-Length', str(son - bas + 1))
+        if m:
+            self.send_header('Content-Range', f'bytes {bas}-{son}/{boyut}')
+        self.end_headers()
+        with open(dosya, 'rb') as f:
+            f.seek(bas); kalan = son - bas + 1
+            try:
+                while kalan > 0:
+                    parca = f.read(min(1 << 20, kalan))
+                    if not parca:
+                        break
+                    self.wfile.write(parca); kalan -= len(parca)
+            except (ConnectionError, OSError):
+                pass
+
+    def ig_isle(self, metin):
+        try:
+            g = json.loads(metin)
+        except ValueError:
+            return self.cevap(400, 'text/plain', b'bozuk')
+        try:
+            if self.path == '/ig-paylas':
+                # Only the owner's press on the card gets here; nothing in the office posts by itself.
+                instagram.paylas(str(g.get('id', '')), str(g.get('aciklama', '')))
+                olay('Sahibi bir Instagram gönderisini paylaşmaya başlattı')
+            elif self.path == '/ig-sil':
+                instagram.sil(str(g.get('id', '')))
+            elif self.path == '/ig-kaydet':
+                alan = {'aciklama': str(g.get('aciklama', ''))[:2200]}
+                if 'muzik_ekle' in g:
+                    alan['muzik_ekle'] = bool(g['muzik_ekle'])
+                instagram.degistir(str(g.get('id', '')), **alan)
+        except instagram.Hata as e:
+            return self.cevap(400, 'text/plain; charset=utf-8', str(e).encode())
+        return self.cevap(200, 'application/json; charset=utf-8', json.dumps(ig_liste(), ensure_ascii=False).encode())
+
+    def not_isle(self, metin):
+        try:
+            g = json.loads(metin)
+        except ValueError:
+            return self.cevap(400, 'text/plain', b'bozuk')
+        with not_kilit:
+            L = notlar_oku()
+            if self.path == '/not-sil':
+                L = [n for n in L if n['id'] != g.get('id')]
+            else:
+                adres = str(g.get('adres', '')).strip()
+                if not re.match(r'https?://[^\s]+$', adres):
+                    return self.cevap(400, 'text/plain', b'adres')
+                n = next((n for n in L if n['id'] == g.get('id')), None)
+                if n is None:
+                    n = {'id': datetime.datetime.now().strftime('%Y%m%d%H%M%S%f'), 'tarih': datetime.date.today().isoformat()}
+                    L.insert(0, n)
+                # Tabs (the owner, 11 November 2026: "uygulamalarım skillerim mcplerim websiteleri gibi sekmeler").
+                bolum = g.get('bolum') if g.get('bolum') in NOT_BOLUMLERI else 'site'
+                n.update(adres=adres[:600], baslik=str(g.get('baslik', '')).strip()[:120], bolum=bolum,
+                         durum=g.get('durum') if g.get('durum') in ('kuruldu', 'kurulmadi') else '',
+                         etiket=str(g.get('etiket', '')).strip()[:40], not_=str(g.get('not_', '')).strip()[:1500])
+            notlar_yaz(L)
+        return self.cevap(200, 'application/json; charset=utf-8', json.dumps(L, ensure_ascii=False).encode())
+
     def proje_sec(self, kimlik):
         a = ayar(); a['proje'] = kimlik
         with open(yol('ayar.json'), 'w', encoding='utf-8', newline='') as f:
@@ -1310,8 +1500,14 @@ class Ekran(BaseHTTPRequestHandler):
     def do_POST(self):
         if not self.yerel():
             return self.cevap(403, 'text/plain', b'yasak')
-        n = min(int(self.headers.get('Content-Length', 0)), 40000 if self.path == '/bilgi' else 4000)
+        n = min(int(self.headers.get('Content-Length', 0)), {'/bilgi': 40000, '/plan-ekle': 8000000}.get(self.path, 4000))
         metin = self.rfile.read(n).decode('utf-8', 'ignore').strip()
+        if self.path in ('/plan-ekle', '/plan-sil'):
+            return self.plan_isle(metin)
+        if self.path in ('/not-ekle', '/not-sil'):
+            return self.not_isle(metin)
+        if self.path in ('/ig-paylas', '/ig-sil', '/ig-kaydet'):
+            return self.ig_isle(metin)
         if self.path == '/mesaj' and metin:
             ad = datetime.datetime.now().strftime('%Y-%m-%d-%H%M%S')
             with open(yol('mesajlar', ad + '.txt'), 'w', encoding='utf-8') as f:

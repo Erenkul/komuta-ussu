@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instagram</title>
+<style>
+/* Instagram: hazırlanan taslaklar onay kartında bekler; yalnız senin Paylaş'ın gönderir. Paylaşım
+   kisisel/instagram/ayar.json "yayinda": true olana kadar kilitlidir. Kurulum README'de. */
+:root{--bg:#04070c;--panel:#0a141e;--panel2:#0e1c29;--line:#1d4656;--line2:#16323f;--cy:#4fe3ff;--cy2:#a8f3ff;
+--amber:#ffb648;--red:#ff5470;--ok:#55f2a9;--pink:#ff5fa8;--text:#e4f4fa;--dim:#8fb0bd;--dim2:#5f8392;--mono:Consolas,"Cascadia Mono",monospace;
+--sans:"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font:15px/1.5 var(--sans)}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--cy)}
+.ust{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:14px 22px;border-bottom:1px solid var(--line);background:var(--panel)}
+.geri{color:var(--dim);text-decoration:none;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:6px}
+.geri:hover{color:var(--cy2);border-color:var(--cy)}
+h1{margin:0;font:600 18px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--cy2)}
+.hesap{color:var(--dim);font-size:14px}
+.hesap a{color:var(--pink);text-decoration:none}
+.sekmeler{display:flex;gap:2px;padding:0 22px;background:var(--panel);border-bottom:1px solid var(--line2);overflow-x:auto}
+.sekme{background:transparent;border:0;border-bottom:3px solid transparent;padding:12px 16px 9px;color:var(--dim);cursor:pointer;font-size:15px;font-weight:600;white-space:nowrap}
+.sekme:hover{color:var(--text)}
+.sekme.on{color:var(--cy2);border-bottom-color:var(--cy)}
+.sekme small{font:12px var(--mono);color:var(--dim2);margin-left:6px}
+main{max-width:1180px;margin:0 auto;padding:20px 22px 60px}
+.aciklama{color:var(--dim);font-size:14px;margin:0 0 14px}
+.kilit{display:flex;gap:10px;align-items:flex-start;background:#1f1708;border:1px solid #6b4a14;color:#ffd79a;border-radius:10px;padding:10px 14px;margin:0 0 16px;font-size:14px}
+.suzgec{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px}
+.cip{background:var(--panel);border:1px solid var(--line2);color:var(--dim);border-radius:99px;padding:4px 12px;cursor:pointer;font-size:13px}
+.cip.on{color:var(--cy2);border-color:var(--cy)}
+.grup{margin:22px 0 10px;font:600 13px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cy2)}
+.bos{color:var(--dim);padding:30px 0;text-align:center}
+input:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--cy);outline-offset:1px}
+.kart{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:18px;background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:16px;margin-bottom:14px}
+.kart video{width:100%;aspect-ratio:9/16;background:#000;border-radius:10px;object-fit:contain}
+.gorseller{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;align-content:start}
+.gorseller img{width:100%;border-radius:6px;background:var(--bg);cursor:zoom-in}
+.kapak{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--dim)}
+.kapak img{width:64px;border-radius:6px;cursor:zoom-in}
+.sag{display:flex;flex-direction:column;gap:10px;min-width:0}
+.kart h2{margin:0;font-size:17px;font-weight:600;overflow-wrap:anywhere}
+.bilgi{display:flex;flex-wrap:wrap;gap:6px}
+.rozet{font:12px var(--mono);border:1px solid var(--line2);border-radius:99px;padding:2px 9px;color:var(--dim)}
+.rozet.bekliyor{color:var(--amber);border-color:#6b4a14}
+.rozet.yukleniyor,.rozet.isleniyor{color:var(--cy2);border-color:var(--line)}
+.rozet.paylasildi{color:var(--ok);border-color:#1f6b45}
+.rozet.hata,.rozet.sorun{color:var(--red);border-color:#6b2232}
+.rozet.elle{color:var(--pink);border-color:#6b2350}
+.notu{margin:0;color:var(--dim);font-size:14px;white-space:pre-wrap;border-left:3px solid var(--line);padding-left:10px}
+.muzik{margin:0;font-size:14px;color:#ffd0ea;white-space:pre-wrap;border-left:3px solid #6b2350;padding-left:10px}
+.dosyalar{font:12px var(--mono);color:var(--dim2);overflow-wrap:anywhere}
+label{font-size:13px;color:var(--dim)}
+textarea{width:100%;min-height:130px;resize:vertical;background:var(--bg);border:1px solid var(--line2);border-radius:8px;padding:10px 12px;line-height:1.45}
+.sayac{font:12px var(--mono);color:var(--dim2)}
+.sayac.fazla{color:var(--red)}
+.dugmeler{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:auto}
+.btn{background:#0f3a4a;border:1px solid var(--cy);color:var(--cy2);border-radius:8px;padding:9px 18px;cursor:pointer;font-weight:600}
+.btn:hover{background:#15536a}
+.btn.paylas{background:linear-gradient(90deg,#7a2a8c,#c2386e);border-color:var(--pink);color:#fff}
+.btn.paylas:hover{filter:brightness(1.12)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+.sil{background:transparent;border:0;color:var(--dim2);cursor:pointer;font-size:13px;margin-left:auto}
+.sil:hover{color:var(--red)}
+.hatayazi{color:var(--red);font-size:14px;margin:0}
+.tamam{color:var(--ok);font-size:14px;margin:0}
+.ozet{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px}
+.kutu{background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:12px 14px}
+.kutu b{display:block;font:600 26px var(--mono);color:var(--cy2)}
+.kutu span{font-size:13px;color:var(--dim)}
+.cizelge{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line2);border-radius:12px;overflow:hidden}
+.cizelge th,.cizelge td{padding:9px 10px;border-bottom:1px solid var(--line2);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cizelge th{font:600 12px var(--mono);color:var(--dim);text-transform:uppercase;letter-spacing:.06em;background:var(--panel2)}
+.cizelge td:first-child,.cizelge th:first-child{text-align:left;white-space:normal;max-width:340px}
+.cizelge tr:last-child td{border-bottom:0}
+.kaydir{overflow-x:auto}
+.ustsatir{display:flex;align-items:center;gap:12px;margin-bottom:12px;color:var(--dim);font-size:13px}
+@media(max-width:720px){.kart{grid-template-columns:1fr}.kart video{max-height:70vh}}
+</style>
+</head>
+<body>
+<header class="ust">
+  <a class="geri" href="/">← Komuta Üssü</a>
+  <h1>Instagram</h1>
+  <span class="hesap" id="hesap"></span>
+</header>
+<nav class="sekmeler" id="sekmeler" role="tablist"></nav>
+<main>
+  <p class="aciklama" id="aciklama"></p>
+  <div id="kilit"></div>
+  <div class="suzgec" id="suzgec"></div>
+  <div id="liste"></div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const el=(t,c,y)=>{const e=document.createElement(t);if(c)e.className=c;if(y!=null)e.textContent=y;return e};
+const SEKME=[['bekleyen','Taslaklar','Hazırlanan gönderiler, önerilen sırayla. Videoyu izle, açıklamayı düzelt; yalnız senin Paylaş\'ın gönderir.'],
+ ['paylasilan','Paylaşılanlar','Buradan paylaşılan gönderiler ve Instagram\'daki adresleri.'],
+ ['istatistik','İstatistik','Hesabın ve son 12 gönderinin sayıları, Instagram\'dan. En çok beş dakikada bir sorulur.']];
+const DURUM={bekliyor:'Taslak',yukleniyor:'Yükleniyor…',isleniyor:'Instagram işliyor…',paylasildi:'Paylaşıldı',hata:'Hata'};
+let sekme='bekleyen',veri={yayinda:false,sinir:5,taslaklar:[]},ist=null,zaman=null,dil='hepsi';
+try{const k=localStorage.getItem('ig.sekme');if(SEKME.some(s=>s[0]===k))sekme=k;dil=localStorage.getItem('ig.dil')||'hepsi'}catch(e){}
+const T=()=>veri.taslaklar||[];
+const bekleyen=()=>T().filter(x=>x.durum!=='paylasildi'&&(dil==='hepsi'||x.dil===dil)).sort((a,b)=>(a.sira||999)-(b.sira||999)||(a.dil||'').localeCompare(b.dil||''));
+const paylasilan=()=>T().filter(x=>x.durum==='paylasildi');
+
+function ciz(){
+  const say={bekleyen:T().filter(x=>x.durum!=='paylasildi').length,paylasilan:paylasilan().length,istatistik:ist&&ist.medya?ist.medya.length:''};
+  $('sekmeler').replaceChildren(...SEKME.map(([k,ad])=>{const b=el('button','sekme'+(k===sekme?' on':''),ad);b.type='button';b.setAttribute('role','tab');
+    b.setAttribute('aria-selected',k===sekme);if(say[k]!=='')b.append(el('small',null,say[k]));
+    b.onclick=()=>{sekme=k;try{localStorage.setItem('ig.sekme',k)}catch(e){}ciz();if(k==='istatistik'&&!ist)istatistik()};return b}));
+  $('aciklama').textContent=SEKME.find(s=>s[0]===sekme)[2];
+  $('kilit').replaceChildren();
+  if(!veri.yayinda&&sekme!=='istatistik'){const k=el('p','kilit');k.append(el('b',null,'🔒'),el('span',null,'Paylaşım kapalı: kisisel/instagram/ayar.json içinde "yayinda": true olunca açılır. O güne kadar taslaklar burada hazır bekler.'));$('kilit').append(k)}
+  $('suzgec').replaceChildren();
+  if(sekme==='bekleyen'){[['hepsi','Hepsi'],['en','İngilizce'],['tr','Türkçe']].forEach(([k,a])=>{const c=el('button','cip'+(dil===k?' on':''),a);c.type='button';
+    c.onclick=()=>{dil=k;try{localStorage.setItem('ig.dil',k)}catch(e){}ciz()};$('suzgec').append(c)})}
+  if(sekme==='istatistik')return istatistikCiz();
+  const L=sekme==='bekleyen'?bekleyen():paylasilan();
+  if(!L.length){$('liste').replaceChildren(el('p','bos',sekme==='bekleyen'?'Taslak yok. python instagram.py taslak ... ile eklenen gönderiler burada görünür.':'Buradan henüz paylaşılan gönderi yok.'));return}
+  // A card being typed in is not drawn again under your hands.
+  const odak=document.activeElement&&document.activeElement.dataset.id;
+  const parca=[];let son=null;
+  L.forEach(x=>{if(sekme==='bekleyen'&&(x.grup||'')!==son){son=x.grup||'';if(son)parca.push(el('h3','grup',son))}
+    parca.push(x.id===odak&&document.querySelector('[data-kart="'+x.id+'"]')||kart(x))});
+  $('liste').replaceChildren(...parca);
+}
+function kart(x){
+  const k=el('article','kart');k.dataset.kart=x.id;
+  const sol=el('div');
+  if(x.video){const v=el('video');v.src='/ig-video/'+x.id;v.controls=true;v.preload='metadata';v.playsInline=true;sol.append(v)}
+  if(x.gorsel_sayisi){const g=el('div','gorseller');for(let i=0;i<x.gorsel_sayisi;i++){const im=el('img');im.src='/ig-gorsel/'+x.id+'/'+i;im.loading='lazy';im.alt=(i+1)+'. görsel';
+    im.onclick=()=>window.open(im.src,'_blank','noopener');g.append(im)}sol.append(g)}
+  const s=el('div','sag');
+  s.append(el('h2',null,(x.sira?x.sira+'. ':'')+x.baslik));
+  const b=el('div','bilgi');b.append(el('span','rozet '+x.durum,DURUM[x.durum]||x.durum));
+  if(x.tur==='elle')b.append(el('span','rozet elle','telefondan elle paylaşılacak'));
+  if(x.dil)b.append(el('span','rozet',x.dil.toUpperCase()));
+  if(x.sure)b.append(el('span','rozet',x.sure+' sn'));
+  if(x.en)b.append(el('span','rozet',x.en+'×'+x.boy));
+  if(x.mb)b.append(el('span','rozet',x.mb+' MB'));
+  if(x.gorsel_sayisi)b.append(el('span','rozet',x.gorsel_sayisi+' görsel'));
+  (x.sorun||[]).forEach(z=>b.append(el('span','rozet sorun',z)));
+  s.append(b);
+  if(x.kapak){const kp=el('div','kapak'),im=el('img');im.src='/ig-gorsel/'+x.id+'/kapak';im.alt='kapak';im.onclick=()=>window.open(im.src,'_blank','noopener');
+    kp.append(im,el('span',null,'Kapak: videonun son karesine konuldu, profilde bu görünür.'));s.append(kp)}
+  if(x.notu)s.append(el('p','notu',x.notu));
+  if(x.muzik&&!x.muzik_id)s.append(el('p','muzik','♪ Müzik (Instagram\'da sen ekle): '+x.muzik));
+  if(x.muzik_id){const m=el('label','muzik'),c_=el('input');c_.type='checkbox';c_.checked=!!x.muzik_ekle;c_.disabled=!(x.durum==='bekliyor'||x.durum==='hata');
+    c_.onchange=async()=>{veri=await gonder('/ig-kaydet',{id:x.id,aciklama:document.getElementById('a'+x.id).value,muzik_ekle:c_.checked})};
+    m.append(c_,' ♪ '+x.muzik+' — Paylaş\'ta Instagram\'ın kendi listesinden eklenir (müzik %'+(x.muzik_ses||30)+', videonun sesi %100). İşareti kaldırırsan telefondan kendin eklersin.');s.append(m)}
+  if(x.tur==='elle'&&x.dosyalar&&x.dosyalar.length)s.append(el('div','dosyalar','Dosyalar: '+x.dosyalar.join(', ')));
+  const acik=x.durum==='bekliyor'||x.durum==='hata';
+  const l=el('label',null,'Açıklama');const t=el('textarea');t.value=x.aciklama||'';t.dataset.id=x.id;t.readOnly=!acik;t.id='a'+x.id;l.htmlFor=t.id;
+  const c=el('span','sayac');let p=null;
+  const say=()=>{const n=t.value.length,h=(t.value.match(/#[\p{L}\p{N}_]/gu)||[]).length,fazla=n>2200||h>veri.sinir;
+    c.textContent=n+' / 2200 karakter · '+h+' / '+veri.sinir+' etiket';c.classList.toggle('fazla',fazla);if(p)p.disabled=!veri.yayinda||!acik||fazla};
+  s.append(l,t,c);
+  if(x.hata)s.append(el('p','hatayazi','Instagram: '+x.hata));
+  if(x.adres){const a=el('a',null,'Instagram\'da aç →');a.href=x.adres;a.target='_blank';a.rel='noopener';const p_=el('p','tamam','Paylaşıldı: '+(x.paylasildi||'')+' ');p_.append(a);s.append(p_)}
+  const d=el('div','dugmeler');
+  if(acik){
+    const kay=el('button','btn','Açıklamayı kaydet');kay.type='button';
+    kay.onclick=async()=>{veri=await gonder('/ig-kaydet',{id:x.id,aciklama:t.value});kay.textContent='Kaydedildi';setTimeout(()=>kay.textContent='Açıklamayı kaydet',1500)};
+    const kop=el('button','btn','Açıklamayı kopyala');kop.type='button';
+    kop.onclick=async()=>{try{await navigator.clipboard.writeText(t.value);kop.textContent='Kopyalandı'}catch(e){t.select();document.execCommand('copy');kop.textContent='Kopyalandı'}setTimeout(()=>kop.textContent='Açıklamayı kopyala',1500)};
+    d.append(kay,kop);
+    if(x.tur!=='elle'){
+      p=el('button','btn paylas',!veri.yayinda?'Yayından sonra açılır':x.durum==='hata'?'Yeniden dene':'Instagram\'da paylaş');p.type='button';
+      p.onclick=async()=>{
+        if(!confirm('Bu video şimdi @'+((ist&&ist.hesap&&ist.hesap.username)||'hesabın')+' hesabında herkese açık Reel olarak paylaşılacak. Emin misin?'))return;
+        p.disabled=true;
+        try{veri=await gonder('/ig-paylas',{id:x.id,aciklama:t.value});ciz();izle()}catch(h){alert('Paylaşılamadı: '+h.message);p.disabled=false}
+      };
+      d.append(p);
+    }
+    const si=el('button','sil','taslağı sil');si.type='button';si.onclick=async()=>{if(!confirm('"'+x.baslik+'" taslağı silinsin mi? Senin dosyaların yerinde kalır.'))return;veri=await gonder('/ig-sil',{id:x.id});ciz()};
+    d.append(si);
+  }
+  s.append(d);say();t.oninput=say;
+  k.append(sol,s);return k;
+}
+const sayi=v=>v==null?'–':Number(v).toLocaleString('tr-TR');
+function istatistikCiz(){
+  if(!ist){$('liste').replaceChildren(el('p','bos','Instagram\'dan okunuyor…'));return}
+  if(ist.hata){$('liste').replaceChildren(el('p','hatayazi','Okunamadı: '+ist.hata));return}
+  const h=ist.hesap||{},g=ist.gun||{};
+  const o=el('div','ozet');
+  [[h.followers_count,'takipçi'],[h.media_count,'gönderi'],[g.reach,'bugünkü erişim'],[g.profile_views,'bugünkü profil ziyareti'],[g.accounts_engaged,'bugün etkileşen hesap']]
+    .forEach(([v,a])=>{const k=el('div','kutu');k.append(el('b',null,sayi(v)),el('span',null,a));o.append(k)});
+  const u=el('div','ustsatir');u.append(el('span',null,'Son okuma: '+ist.saat));
+  const yen=el('button','btn','Şimdi yenile');yen.type='button';yen.onclick=()=>istatistik(true);u.append(yen);
+  const parca=[o,u];
+  if(!ist.medya.length)parca.push(el('p','bos','Henüz gönderi yok. İlk Reel paylaşılınca sayıları burada görünür.'));
+  else{
+    const tb=el('table','cizelge'),th=el('tr');
+    ['Gönderi','İzlenme','Erişim','Beğeni','Yorum','Paylaşım','Kaydetme','Ort. izleme'].forEach(a=>th.append(el('th',null,a)));
+    tb.append(el('thead')).append(th);const bd=el('tbody');
+    ist.medya.forEach(m=>{const r=el('tr'),z=m.sayilar||{},ilk=el('td'),a=el('a',null,(m.caption||'(açıklamasız)').split('\n')[0].slice(0,80));
+      a.href=m.permalink;a.target='_blank';a.rel='noopener';ilk.append(a,el('div','sayac',(m.timestamp||'').slice(0,10)+' · '+(m.media_product_type||m.media_type)));r.append(ilk);
+      [z.views,z.reach,z.likes??m.like_count,z.comments??m.comments_count,z.shares,z.saved].forEach(v=>r.append(el('td',null,sayi(v))));
+      r.append(el('td',null,z.ig_reels_avg_watch_time!=null?(z.ig_reels_avg_watch_time/1000).toFixed(1)+' sn':'–'));bd.append(r)});
+    tb.append(bd);const w=el('div','kaydir');w.append(tb);parca.push(w);
+  }
+  $('liste').replaceChildren(...parca);
+}
+async function istatistik(taze){
+  if(sekme==='istatistik'&&taze)$('liste').replaceChildren(el('p','bos','Instagram\'dan okunuyor…'));
+  try{ist=await (await fetch('/ig-istatistik.json'+(taze?'?taze=1':''))).json()}catch(e){ist={hata:'Komuta Üssü yanıt vermedi.'}}
+  const h=ist.hesap;
+  if(h){$('hesap').replaceChildren();const a=el('a',null,'@'+h.username);a.href='https://www.instagram.com/'+h.username+'/';a.target='_blank';a.rel='noopener';
+    $('hesap').append(a,' · '+sayi(h.followers_count)+' takipçi')}
+  ciz();
+}
+async function gonder(yol,govde){
+  const r=await fetch(yol,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(govde)});
+  if(!r.ok)throw new Error(await r.text());
+  return r.json();
+}
+async function yukle(){try{veri=await (await fetch('/ig-taslaklar.json')).json()}catch(e){}ciz()}
+// While a post is going up the card is asked every five seconds, and no longer.
+const suruyor=()=>T().some(x=>x.durum==='yukleniyor'||x.durum==='isleniyor');
+function izle(){clearTimeout(zaman);zaman=setTimeout(async()=>{await yukle();if(suruyor())izle();else if(ist)istatistik(true)},5000)}
+yukle().then(()=>{if(suruyor())izle()});
+istatistik(false);
+</script>
+</body>
+</html>

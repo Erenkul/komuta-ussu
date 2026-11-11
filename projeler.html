@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projeler</title>
+<style>
+/* Projeler: planlanan projeler (fikir, görsel, not; kisisel/ içinde, repoya girmez) ve ofisin
+   tanıdığı mevcut projeler. Renkler Notlarım ile aynı. */
+:root{--bg:#04070c;--panel:#0a141e;--panel2:#0e1c29;--line:#1d4656;--line2:#16323f;--cy:#4fe3ff;--cy2:#a8f3ff;
+--amber:#ffb648;--red:#ff5470;--ok:#55f2a9;--text:#e4f4fa;--dim:#8fb0bd;--dim2:#5f8392;--mono:Consolas,"Cascadia Mono",monospace;
+--sans:"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font:15px/1.5 var(--sans)}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--cy)}
+.ust{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:14px 22px;border-bottom:1px solid var(--line);background:var(--panel)}
+.geri{color:var(--dim);text-decoration:none;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:6px}
+.geri:hover{color:var(--cy2);border-color:var(--cy)}
+h1{margin:0;font:600 18px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--cy2)}
+.sayi{color:var(--dim);font-size:14px}
+.sekmeler{display:flex;gap:2px;padding:0 22px;background:var(--panel);border-bottom:1px solid var(--line2);overflow-x:auto}
+.sekme{background:transparent;border:0;border-bottom:3px solid transparent;padding:12px 16px 9px;color:var(--dim);cursor:pointer;font-size:15px;font-weight:600;white-space:nowrap}
+.sekme:hover{color:var(--text)}
+.sekme.on{color:var(--cy2);border-bottom-color:var(--cy)}
+.sekme small{font:12px var(--mono);color:var(--dim2);margin-left:6px}
+main{max-width:1100px;margin:0 auto;padding:20px 22px 60px}
+.aciklama{color:var(--dim);font-size:14px;margin:0 0 14px}
+details.ekle{background:var(--panel);border:1px solid var(--line2);border-radius:12px;margin-bottom:20px}
+details.ekle summary{cursor:pointer;padding:12px 16px;color:var(--cy2);font-weight:600;list-style:none}
+details.ekle summary::-webkit-details-marker{display:none}
+details.ekle summary::before{content:"+ ";color:var(--cy)}
+details.ekle[open] summary::before{content:"− "}
+form{display:grid;grid-template-columns:2fr 1fr 1.4fr auto;gap:8px;padding:0 14px 14px}
+form textarea{grid-column:1/-2;min-height:60px;resize:vertical}
+form input,form textarea,form select{background:var(--bg);border:1px solid var(--line2);border-radius:8px;padding:8px 11px;min-width:0}
+form .yaz{grid-column:-2/-1;grid-row:1/3;align-self:stretch}
+.btn{background:#0f3a4a;border:1px solid var(--cy);color:var(--cy2);border-radius:8px;padding:8px 18px;cursor:pointer;font-weight:600}
+.btn:hover{background:#15536a}
+.hata{grid-column:1/-1;color:var(--red);font-size:14px;margin:0}
+input:focus,textarea:focus,select:focus,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--cy);outline-offset:1px}
+.izgara{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.kart{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:14px 16px 12px;min-width:0}
+.kart:hover{border-color:var(--line)}
+.kart img{width:100%;max-height:420px;object-fit:contain;border-radius:8px;background:var(--bg);cursor:zoom-in}
+.kart h2{margin:0;font-size:16px;font-weight:600;overflow-wrap:anywhere}
+.kart h2 a{color:var(--text);text-decoration:none}
+.kart h2 a:hover{color:var(--cy2);text-decoration:underline}
+.not{margin:0;color:var(--dim);font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.alt{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:auto;padding-top:6px}
+.rozet{font:12px var(--mono);border:1px solid var(--line2);border-radius:99px;padding:2px 9px;color:var(--dim)}
+.rozet.fikir{color:var(--amber);border-color:#6b4a14}
+.rozet.planlandi{color:var(--cy2);border-color:var(--line)}
+.rozet.basladi,.rozet.acik{color:var(--ok);border-color:#1f6b45}
+.tarih{font:12px var(--mono);color:var(--dim2);margin-left:auto}
+.sil{background:transparent;border:0;color:var(--dim2);cursor:pointer;font-size:13px;padding:2px 4px}
+.sil:hover{color:var(--red)}
+.bos{color:var(--dim);padding:30px 0;text-align:center}
+@media(max-width:700px){form{grid-template-columns:1fr}form textarea,form .yaz{grid-column:1;grid-row:auto}}
+</style>
+</head>
+<body>
+<header class="ust">
+  <a class="geri" href="/">← Komuta Üssü</a>
+  <h1>Projeler</h1>
+  <span class="sayi" id="sayi"></span>
+</header>
+<nav class="sekmeler" id="sekmeler" role="tablist"></nav>
+<main>
+  <p class="aciklama" id="aciklama"></p>
+  <details class="ekle" id="ekle">
+    <summary>Planlanan proje ekle</summary>
+    <form id="form">
+      <input id="fBaslik" placeholder="Projenin adı ya da fikir" maxlength="120" required>
+      <select id="fDurum"><option value="fikir">Fikir</option><option value="planlandi">Planlandı</option><option value="basladi">Başladı</option></select>
+      <input id="fGorsel" type="file" accept="image/png,image/jpeg,image/webp" aria-label="Görsel (isteğe bağlı)">
+      <button class="btn yaz" type="submit">Ekle</button>
+      <textarea id="fNot" placeholder="Not: ne olacak, neye benzeyecek, hangi araçla" maxlength="3000"></textarea>
+      <p class="hata" id="hata" hidden></p>
+    </form>
+  </details>
+  <div class="izgara" id="liste"></div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const el=(t,c,y)=>{const e=document.createElement(t);if(c)e.className=c;if(y!=null)e.textContent=y;return e};
+const SEKME=[['planlanan','Planlanan projeler','Aklındaki projeler ve fikirler: görseliyle, notuyla. Yalnız bu bilgisayarda durur.'],
+ ['mevcut','Mevcut projeler','Ofisin tanıdığı projelerin: adı, dili, son değişiklik tarihi ve GitHub bağlantısı.']];
+const DURUM={fikir:'Fikir',planlandi:'Planlandı',basladi:'Başladı'};
+let sekme='planlanan',veri={mevcut:[],planlanan:[]};
+try{const k=localStorage.getItem('projeler.sekme');if(SEKME.some(s=>s[0]===k))sekme=k}catch(e){}
+
+function ciz(){
+  $('sekmeler').replaceChildren(...SEKME.map(([k,ad])=>{const b=el('button','sekme'+(k===sekme?' on':''),ad);b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected',k===sekme);
+    b.append(el('small',null,veri[k].length));b.onclick=()=>{sekme=k;try{localStorage.setItem('projeler.sekme',k)}catch(e){}ciz()};return b}));
+  $('aciklama').textContent=SEKME.find(s=>s[0]===sekme)[2];
+  $('ekle').hidden=sekme!=='planlanan';
+  $('sayi').textContent=veri.planlanan.length+' planlanan, '+veri.mevcut.length+' mevcut';
+  const L=veri[sekme];
+  if(!L.length){$('liste').replaceChildren(el('p','bos',sekme==='planlanan'?'Henüz planlanan proje yok. Yukarıdan ekleyebilirsin.':'Proje bulunamadı.'));return}
+  $('liste').replaceChildren(...L.map(sekme==='planlanan'?planKart:mevcutKart));
+}
+function planKart(p){
+  const k=el('article','kart');
+  if(p.gorsel){const i=el('img');i.src='/plan-gorsel/'+p.gorsel;i.alt=p.baslik;i.loading='lazy';i.onclick=()=>window.open(i.src,'_blank','noopener');k.append(i)}
+  k.append(el('h2',null,p.baslik));
+  if(p.not_)k.append(el('p','not',p.not_));
+  const a=el('div','alt');a.append(el('span','rozet '+p.durum,DURUM[p.durum]||'Fikir'),el('span','tarih',p.tarih));
+  const s=el('button','sil','sil');s.type='button';s.onclick=async()=>{if(!confirm('"'+p.baslik+'" silinsin mi?'))return;veri.planlanan=await gonder('/plan-sil',{id:p.id});ciz()};
+  a.append(s);k.append(a);return k;
+}
+function mevcutKart(p){
+  const k=el('article','kart'),h=el('h2');
+  if(p.github){const a=el('a',null,p.ad);a.href=p.github;a.target='_blank';a.rel='noopener';h.append(a)}else h.textContent=p.ad;
+  k.append(h);
+  const a=el('div','alt');
+  if(p.dil)a.append(el('span','rozet',p.dil));
+  a.append(el('span','rozet'+(p.gizli?'':' acik'),p.gizli?'özel repo':'açık repo'));
+  if(p.kapali)a.append(el('span','rozet','yalnız bağlantı'));
+  a.append(el('span','tarih',p.son?'son: '+p.son:''));
+  k.append(a);return k;
+}
+async function gonder(yol,govde){
+  const r=await fetch(yol,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(govde)});
+  if(!r.ok)throw new Error(await r.text());
+  return r.json();
+}
+const oku=d=>new Promise((ok,hata)=>{const f=new FileReader();f.onload=()=>ok(f.result);f.onerror=hata;f.readAsDataURL(d)});
+$('form').onsubmit=async e=>{
+  e.preventDefault();$('hata').hidden=true;
+  try{
+    const d=$('fGorsel').files[0];
+    if(d&&d.size>5e6)throw new Error('Görsel 5 MB\'tan büyük.');
+    veri.planlanan=await gonder('/plan-ekle',{baslik:$('fBaslik').value,durum:$('fDurum').value,not_:$('fNot').value,gorsel:d?await oku(d):''});
+    $('form').reset();$('ekle').open=false;ciz();
+  }catch(h){$('hata').textContent='Eklenemedi: '+h.message;$('hata').hidden=false}
+};
+fetch('/projeler.json').then(r=>r.json()).then(v=>{veri=v;ciz()}).catch(()=>{$('liste').replaceChildren(el('p','bos','Liste okunamadı. Komuta Üssü çalışıyor mu?'))});
+ciz();
+</script>
+</body>
+</html>
