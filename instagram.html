@@ -123,6 +123,8 @@ function ciz(){
   // A card being typed in is not drawn again under your hands.
   const odak=document.activeElement&&document.activeElement.dataset.id;
   const parca=[];let son=null;
+  // Cards are numbered by their place in the list; one number for the EN and TR pair of a post.
+  let no=0,onceki=null;L.forEach(x=>{const k=(x.grup||'')+'|'+x.sira+'|'+x.baslik.replace(/ \((EN|TR)\).*$/,'');if(k!==onceki){no++;onceki=k}x.no=no});
   L.forEach(x=>{if(sekme==='bekleyen'&&(x.grup||'')!==son){son=x.grup||'';if(son)parca.push(el('h3','grup',son))}
     parca.push(x.id===odak&&document.querySelector('[data-kart="'+x.id+'"]')||kart(x))});
   $('liste').replaceChildren(...parca);
@@ -134,7 +136,7 @@ function kart(x){
   if(x.gorsel_sayisi){const g=el('div','gorseller');for(let i=0;i<x.gorsel_sayisi;i++){const im=el('img');im.src='/ig-gorsel/'+x.id+'/'+i;im.loading='lazy';im.alt=(i+1)+'. görsel';
     im.onclick=()=>window.open(im.src,'_blank','noopener');g.append(im)}sol.append(g)}
   const s=el('div','sag');
-  s.append(el('h2',null,(x.sira?x.sira+'. ':'')+x.baslik));
+  s.append(el('h2',null,(x.no?x.no+'. ':'')+x.baslik));
   const b=el('div','bilgi');b.append(el('span','rozet '+x.durum,DURUM[x.durum]||x.durum));
   if(x.tur==='elle')b.append(el('span','rozet elle','telefondan elle paylaşılacak'));
   if(x.dil)b.append(el('span','rozet',x.dil.toUpperCase()));
