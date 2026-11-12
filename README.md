@@ -169,6 +169,13 @@ yanıtları ekrana gelir. Claude Code ayarlarına (`~/.claude/settings.json`) ş
 
 Claude ekrana `python gelen.py yanit <not-adı> <yanıt>` ile yanıt yazar.
 
+## Kendi modelin ve kendi ajanın
+
+LM Studio'ya indirdiğin herhangi bir modeli `ayar.json`'daki `zincir`'e yazarak kullanabilirsin
+(herkes için `varsayilan`, bir ajan için onun kimliği). Yeni bir ajan `ekip.json`'a bir kayıtla
+eklenir. Claude Code'a "kendi modelimi bağla" ya da "yeni ajan ekle" demen de yeter; adımlar
+[AGENTS.md](AGENTS.md)'de.
+
 ## Klasörler
 
 | Yol | İçerik |

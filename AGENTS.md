@@ -28,6 +28,38 @@ Amaç: ofisi bu bilgisayarda çalışır hale getirmek. Adımlar:
 Yapma: ofisi oturum açılışına yazma, güvenlik duvarında port açma, sunucuyu `127.0.0.1` dışına
 bağlama, yönetici izni isteyen bir şey çalıştırma.
 
+## Kullanıcı "köprüyü kur" dediğinde
+
+Amaç: kullanıcının kendi Claude Code'u ofisin baş ajanı olsun. Ekrandan yazılan notlar Claude'a
+gelir, Claude'un yanıtı ekrana döner. Köprü `gelen.py`'dir.
+
+1. `gelen.py`'nin tam yolunu bul ve ileri eğik çizgiyle yaz (ör. `C:/Users/ad/komuta-ussu/gelen.py`).
+   `python-yolu.txt` varsa (kur.ps1 yazar) `python` yerine oradaki tam yolu kullan.
+2. Kullanıcının `~/.claude/settings.json` dosyasını oku; yoksa boş bir `{}` say. Kullanıcıya ne
+   ekleyeceğini göster ve **onay al**. Sonra `hooks.UserPromptSubmit` listesine şunu **ekle**;
+   oradaki başka kancaları silme, dosyanın diğer ayarlarına dokunma:
+   `{ "hooks": [{ "type": "command", "command": "<python> <gelen.py yolu>" }] }`
+3. Dene: `python gelen.py` hata vermeden çalışmalı (okunmamış not yoksa hiçbir şey yazmaz).
+4. Kullanıcıya Claude Code'u yeniden açmasını söyle. Ondan sonra ekranda yazdığı her not, Claude'a
+   bir sonraki mesajında "Sahibi üsten yazdı (<not-adı>): ..." diye gelir.
+5. Yanıtı ekrana yazmak: `python gelen.py yanit <not-adı> <yanıt>`. Yalnız kullanıcının kendi
+   notlarına yanıt ver; ajan taslakları köprüden gelmez.
+
+## Kullanıcı kendi modelini ya da ajanını bağlamak istediğinde
+
+- **Model sunucusu:** LM Studio (port 1234) ya da Bionic (port 1235). Başka bir adres
+  kullanıyorsa `ayar.json`'daki `api`'yi değiştir (ör. `http://127.0.0.1:1234/v1`); ofis bunu
+  açılışta okur, değiştirdikten sonra ofisi kapatıp yeniden aç.
+- **Model:** sunucuda yüklü modelin adını, `<api>/models` listesinde göründüğü gibi,
+  `ayar.json`'daki `zincir`'e yaz. `varsayilan` herkes içindir; bir ajana ayrı zincir vermek için
+  onun kimliğiyle yeni bir satır ekle. Zincirdeki modeller sırayla denenir.
+- **Yeni ajan:** `ekip.json`'a mevcutlardan birini örnek alarak bir kayıt ekle: `id` (küçük harf,
+  boşluksuz), `ad` (tarihî bir kişi), `unvan`, `rol` (ajana "...sün" diye seslenen tek cümle),
+  görünüş renkleri, masa yeri (`x`, `y`; başkasıyla çakışmasın) ve `beceriler`. Ekran dosya
+  değişince yeni ajanı kendisi okur. Telifli karakter ya da yaşayan bir kişi ekleme.
+- Bulut modelleri, kota ya da ücret gerektiren servisler eklemeden önce kullanıcıya sor; ofis
+  yerel çalışmak üzere kurulu.
+
 ## Kullanıcı "ofise iş ver", "plan yap" dediğinde
 
 Ofis taslak yazan yerel ajanlardan oluşur; sen onlara iş verirsin, çıkanı denetlersin.
